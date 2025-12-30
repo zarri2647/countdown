@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>unknown</title>
+  <style>
+    body {
+      background: #0e949c;
+      background: radial-gradient(
+          circle,
+          rgba(14, 148, 156, 1) 0%,
+          rgba(3, 1, 50, 1) 90%,
+          rgba(2, 0, 36, 1) 100%
+      );
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
+      flex-direction: column;
+      text-align: center;
+      position: relative;
+      overflow: hidden; 
+    }
+    span.author {
+      position: absolute;
+      bottom: 5px;
+      left: 8px;
+      color: white;
+      z-index: 20;
+    }
+    .countdown-container {
+      background-color: rgba(3, 1, 50, 1);
+      padding: 30px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      max-width: 90%;
+      width: 450px;
+      z-index: 15;
+    }
+    h1 {
+      color: wheat;
+      margin-bottom: 25px;
+      font-size: 1.8em;
+    }
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .countdown-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      min-width: 70px;
+    }
+    .countdown-item span {
+      font-size: 2.2em;
+      font-weight: bold;
+      color: #007bff;
+      padding: 8px 10px;
+      border: 2px solid #007bff;
+      border-radius: 8px;
+      background-color: #000000;
+      min-width: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .countdown-item p {
+      font-size: 0.8em;
+      color: white;
+      margin-top: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    #countdown-message {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #28a745;
+      margin-top: 20px;
+    }
+    #txt {
+      font-size: 3.2em;
+      font-weight: bold;
+      color: #28a745;
+      margin-top: 20px;
+    }
+    .hidden { display: none; }
+    img { border-radius: 10px; }
+    .pyro {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .firework {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      box-shadow: 0 0 #fff;
+      animation: bang 1.5s ease-out infinite, gravity 1.5s ease-in infinite;
+    }
+    .f1 { left: 20%; top: 30%; animation-delay: 0.2s; }
+    .f2 { left: 50%; top: 20%; animation-delay: 0.7s; }
+    .f3 { left: 80%; top: 40%; animation-delay: 1.2s; }
+    .f4 { left: 15%; top: 60%; animation-delay: 1.8s; }
+    .f5 { left: 75%; top: 70%; animation-delay: 2.3s; }
+    @keyframes bang {
+      from { box-shadow: 0 0 #fff; }
+      to {
+        box-shadow: 
+          -100px -120px #ff0044, 100px -100px #00ffcc, 50px -150px #ffcc00, 
+          -80px -50px #99ff00, 150px -20px #ff00ff, -150px -100px #0099ff,
+          30px -120px #ffffff, -50px -180px #ff5500, 0px -200px #00ff00;
+      }
+    }
+    @keyframes gravity {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(150px); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="pyro">
+  <div class="firework f1"></div>
+  <div class="firework f2"></div>
+  <div class="firework f3"></div>
+  <div class="firework f4"></div>
+  <div class="firework f5"></div>
+</div>
+<span class="author">website by EMO<br />code number = <code>9830</code></span>
+<div class="countdown-container">
+<img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYm9nNG5ua2Qyb2JzczRjZGtyemF6d2s3MWNnbHRzNWk5cTVyeTBxYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/peAFQfg7Ol6IE/giphy.gif" alt="celebration" width="100" height="100" />
+<h1 id="delete">countdown</h1>
+<div id="countdown" class="countdown">
+<div class="countdown-item">
+<span id="hours">00</span>
+<p>Hours</p>
+</div>
+<div class="countdown-item">
+<span id="minutes">00</span>
+<p>Minutes</p>
+</div>
+<div class="countdown-item">
+<span id="seconds">00</span>
+<p>Seconds</p>
+</div>
+</div>
+<p id="countdown-message" class="hidden"></p>
+<p id="txt" class="hidden"></p>
+</div>
+<audio id="tickSound" src="audio/Notify.webm" preload="auto"></audio>
+<audio id="finishSound" src="public/Secrets.webm" preload="auto"></audio>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+const countdownDate = new Date("dec 1, 2025 00:00:00 GMT+0800").getTime();
+const hoursSpan = document.getElementById("hours");
+const minutesSpan = document.getElementById("minutes");
+const secondsSpan = document.getElementById("seconds");
+const countdownMessage = document.getElementById("countdown-message");
+const text = document.getElementById("txt");
+const del = document.getElementById("delete");
+const countdownContainer = document.getElementById("countdown");
+const tickSound = document.getElementById("tickSound");
+const finishSound = document.getElementById("finishSound");
+let lastSecondPlayed = -1;
+const x = setInterval(function () {
+const now = new Date().getTime();
+const distance = countdownDate - now;
+const hours = Math.floor(distance / (1000 * 60 * 60));
+const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+if (seconds !== lastSecondPlayed && distance > 0) {
+try {
+tickSound.currentTime = 0;
+tickSound.play().catch(e => {}); 
+} catch (e) {}
+lastSecondPlayed = seconds;
+}
+hoursSpan.innerHTML = String(hours).padStart(2, "0");
+minutesSpan.innerHTML = String(minutes).padStart(2, "0");
+secondsSpan.innerHTML = String(seconds).padStart(2, "0");
+if (distance < 0) {
+clearInterval(x);
+tickSound.pause();
+try {
+finishSound.play().catch(e => {});
+} catch (e) {}
+countdownContainer.classList.add("hidden");
+countdownMessage.classList.remove("hidden");
+countdownMessage.innerHTML = "happy new year";
+text.classList.add("hidden");
+text.classList.remove("hidden");
+text.innerHTML = "welcome 2026";
+del.remove();
+}
+}, 1000);
+});
+</script>
+</body>
+</html>

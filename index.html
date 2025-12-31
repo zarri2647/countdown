@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>countdown</title>
+  <title>unknown</title>
   <style>
     body {
       background: #0e949c;
@@ -34,6 +34,7 @@
       z-index: 20;
     }
     .countdown-container {
+      display: flex;
       background-color: rgba(3, 1, 50, 1);
       padding: 30px 20px;
       border-radius: 10px;
@@ -66,7 +67,7 @@
       font-size: 2.2em;
       font-weight: bold;
       color: #007bff;
-      padding: 8px 10px;
+      padding: 9px 10px;
       border: 2px solid #007bff;
       border-radius: 8px;
       background-color: #000000;
@@ -145,11 +146,6 @@
 <div class="countdown-container">
 <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYm9nNG5ua2Qyb2JzczRjZGtyemF6d2s3MWNnbHRzNWk5cTVyeTBxYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/peAFQfg7Ol6IE/giphy.gif" alt="celebration" width="100" height="100" />
 <h1 id="delete">countdown</h1>
-<div id="countdown" class="countdown">
-<div class="countdown-item">
-<span id="hours">00</span>
-<p>Hours</p>
-</div>
 <div class="countdown-item">
 <span id="minutes">00</span>
 <p>Minutes</p>
@@ -167,7 +163,6 @@
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 const countdownDate = new Date("jan 1, 2026 00:00:00 GMT+0800").getTime();
-const hoursSpan = document.getElementById("hours");
 const minutesSpan = document.getElementById("minutes");
 const secondsSpan = document.getElementById("seconds");
 const countdownMessage = document.getElementById("countdown-message");
@@ -180,7 +175,6 @@ let lastSecondPlayed = -1;
 const x = setInterval(function () {
 const now = new Date().getTime();
 const distance = countdownDate - now;
-const hours = Math.floor(distance / (1000 * 60 * 60));
 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 if (seconds !== lastSecondPlayed && distance > 0) {
@@ -190,7 +184,6 @@ tickSound.play().catch(e => {});
 } catch (e) {}
 lastSecondPlayed = seconds;
 }
-hoursSpan.innerHTML = String(hours).padStart(2, "0");
 minutesSpan.innerHTML = String(minutes).padStart(2, "0");
 secondsSpan.innerHTML = String(seconds).padStart(2, "0");
 if (distance < 0) {

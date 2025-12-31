@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>unknown</title>
+  <title>Countdown</title>
   <style>
     body {
       background: #0e949c;
@@ -35,6 +35,8 @@
     }
     .countdown-container {
       display: flex;
+      flex-direction: column;
+      align-items: center;
       background-color: rgba(3, 1, 50, 1);
       padding: 30px 20px;
       border-radius: 10px;
@@ -95,7 +97,7 @@
       color: #28a745;
       margin-top: 20px;
     }
-    .hidden { display: none; }
+    .hidden { display: none !important; }
     img { border-radius: 10px; }
     .pyro {
       position: absolute;
@@ -135,6 +137,7 @@
   </style>
 </head>
 <body>
+
 <div class="pyro">
   <div class="firework f1"></div>
   <div class="firework f2"></div>
@@ -142,65 +145,83 @@
   <div class="firework f4"></div>
   <div class="firework f5"></div>
 </div>
+
 <span class="author">website by EMO<br />code number = <code>9830</code></span>
-<div class="countdown-container">
-<img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYm9nNG5ua2Qyb2JzczRjZGtyemF6d2s3MWNnbHRzNWk5cTVyeTBxYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/peAFQfg7Ol6IE/giphy.gif" alt="celebration" width="100" height="100" />
-<h1 id="delete">countdown</h1>
-<div class="countdown-item">
-<span id="minutes">00</span>
-<p>Minutes</p>
+
+<div id="main-container" class="countdown-container">
+  <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYm9nNG5ua2Qyb2JzczRjZGtyemF6d2s3MWNnbHRzNWk5cTVyeTBxYyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/peAFQfg7Ol6IE/giphy.gif" alt="celebration" width="100" height="100" />
+  <h1 id="delete">countdown</h1>
+  
+  <div id="countdown-timer-wrap" class="countdown">
+    <div class="countdown-item">
+      <span id="minutes">00</span>
+      <p>Minutes</p>
+    </div>
+    <div class="countdown-item">
+      <span id="seconds">00</span>
+      <p>Seconds</p>
+    </div>
+  </div>
+
+  <p id="countdown-message" class="hidden"></p>
+  <p id="txt" class="hidden"></p>
 </div>
-<div class="countdown-item">
-<span id="seconds">00</span>
-<p>Seconds</p>
-</div>
-</div>
-<p id="countdown-message" class="hidden"></p>
-<p id="txt" class="hidden"></p>
-</div>
+
 <audio id="tickSound" src="Notify.webm" preload="auto"></audio>
 <audio id="finishSound" src="public/Secrets.webm" preload="auto"></audio>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-const countdownDate = new Date("jan 1, 2026 00:00:00 GMT+0800").getTime();
-const minutesSpan = document.getElementById("minutes");
-const secondsSpan = document.getElementById("seconds");
-const countdownMessage = document.getElementById("countdown-message");
-const text = document.getElementById("txt");
-const del = document.getElementById("delete");
-const countdownContainer = document.getElementById("countdown");
-const tickSound = document.getElementById("tickSound");
-const finishSound = document.getElementById("finishSound");
-let lastSecondPlayed = -1;
-const x = setInterval(function () {
-const now = new Date().getTime();
-const distance = countdownDate - now;
-const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-if (seconds !== lastSecondPlayed && distance > 0) {
-try {
-tickSound.currentTime = 0;
-tickSound.play().catch(e => {}); 
-} catch (e) {}
-lastSecondPlayed = seconds;
-}
-minutesSpan.innerHTML = String(minutes).padStart(2, "0");
-secondsSpan.innerHTML = String(seconds).padStart(2, "0");
-if (distance < 0) {
-clearInterval(x);
-tickSound.pause();
-try {
-finishSound.play().catch(e => {});
-} catch (e) {}
-countdownContainer.classList.add("hidden");
-countdownMessage.classList.remove("hidden");
-countdownMessage.innerHTML = "happy new year";
-text.classList.add("hidden");
-text.classList.remove("hidden");
-text.innerHTML = "welcome 2026";
-del.remove();
-}
-}, 1000);
+  // Set date to Dec 1, 2025
+  const countdownDate = new Date("Dec 1, 2025 00:00:00 GMT+0800").getTime();
+  
+  const minutesSpan = document.getElementById("minutes");
+  const secondsSpan = document.getElementById("seconds");
+  const countdownMessage = document.getElementById("countdown-message");
+  const text = document.getElementById("txt");
+  const del = document.getElementById("delete");
+  const timerWrap = document.getElementById("countdown-timer-wrap");
+  const tickSound = document.getElementById("tickSound");
+  const finishSound = document.getElementById("finishSound");
+  
+  let lastSecondPlayed = -1;
+
+  const x = setInterval(function () {
+    const now = new Date().getTime();
+    const distance = countdownDate - now;
+
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    if (seconds !== lastSecondPlayed && distance > 0) {
+      try {
+        tickSound.currentTime = 0;
+        tickSound.play().catch(e => {}); 
+      } catch (e) {}
+      lastSecondPlayed = seconds;
+    }
+
+    minutesSpan.innerHTML = String(minutes).padStart(2, "0");
+    secondsSpan.innerHTML = String(seconds).padStart(2, "0");
+
+    if (distance < 0) {
+      clearInterval(x);
+      tickSound.pause();
+      try {
+        finishSound.play().catch(e => {});
+      } catch (e) {}
+      
+      // Hide the timer and show messages
+      timerWrap.classList.add("hidden");
+      countdownMessage.classList.remove("hidden");
+      countdownMessage.innerHTML = "HAPPY NEW YEAR";
+      
+      text.classList.remove("hidden");
+      text.innerHTML = "WELCOME 2026";
+      
+      if(del) del.remove();
+    }
+  }, 1000);
 });
 </script>
 </body>
